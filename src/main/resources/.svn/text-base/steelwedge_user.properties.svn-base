@@ -1,0 +1,10 @@
+#userid=monsantouser
+#password=scaRE#weDGY*FARd63
+#availableServerPort=22
+#host=sailboat.steelwedge.com
+
+userid=sgovi
+password=
+availableServerPort=22
+host=stluapplogprd01
+sftp_remote_directory=/home/sgovi/sample/

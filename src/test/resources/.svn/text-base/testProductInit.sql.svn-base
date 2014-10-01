@@ -1,0 +1,97 @@
+-- ========================================================================
+-- Copyright 2012 the original author or authors.
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--      http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+-- ========================================================================
+
+-- Follow this 3-step process when adding custom/application specific tables/data
+
+
+-- Step1: Clean up your tables, if exists
+drop view DEV_SUPPLY_CHAIN_VW.PRODUCT_MASTER_VW if exists;
+drop table DEV_SUPPLY_CHAIN_VW.PRODUCT_MASTER if exists;
+
+-- Step2: Create your tables
+CREATE SCHEMA DEV_SUPPLY_CHAIN_VW AUTHORIZATION DBA;
+
+CREATE TABLE DEV_SUPPLY_CHAIN_VW.PRODUCT_MASTER
+(
+  FORECASTING_UNIT_ID    VARCHAR(250),
+  FORECASTING_UNIT_DESC  VARCHAR(250),
+  HYBRID_VARIETY_ID      VARCHAR(250),
+  HYBRID_VARIETY_DESC    VARCHAR(250),
+  CROP_ID                VARCHAR(250),
+  CROP_DESC              VARCHAR(250),
+  UOM                    VARCHAR(5),
+  BRAND_FAMILY           VARCHAR(250),
+  BRAND                  VARCHAR(250),
+  GERMPLASM              VARCHAR(250),
+  GROWTH_SEASON          VARCHAR(250),
+  MFG_NAME               VARCHAR(250),
+  PACKAGE_SIZE           VARCHAR(250),
+  SEED_SIZE              VARCHAR(250),
+  TRAIT                  VARCHAR(250),
+  TREATMENT              VARCHAR(250),
+  EXPERIMENTAL_NAME      VARCHAR(250),
+  GLOBAL_NAME            VARCHAR(250),
+  RELATIVE_MATURITY      VARCHAR(250),
+  CULTURE                VARCHAR(250),
+  HYBRID_LIFECYCLE       VARCHAR(250),
+  PARENTAL_FLAG          VARCHAR(250),
+  FORECAST_YEAR          VARCHAR(250),
+  IS_FORECASTED          INT,
+  PROD_DISCONTINUE       INT,
+  PROD_DISCONTINUE_DATE  TIMESTAMP,
+  CRE_BY                 VARCHAR(100),
+  CRE_DT                 TIMESTAMP                   DEFAULT SYSDATE
+);
+
+CREATE VIEW DEV_SUPPLY_CHAIN_VW.PRODUCT_MASTER_VW
+(FORECASTING_UNIT_ID, FORECASTING_UNIT_DESC, HYBRID_VARIETY_ID, HYBRID_VARIETY_DESC, CROP_ID,
+ CROP_DESC, UOM, BRAND_FAMILY, BRAND, GERMPLASM,
+ GROWTH_SEASON, MFG_NAME, PACKAGE_SIZE, SEED_SIZE, TRAIT,
+ TREATMENT, EXPERIMENTAL_NAME, GLOBAL_NAME, RELATIVE_MATURITY, CULTURE,
+ HYBRID_LIFECYCLE, PARENTAL_FLAG, FORECAST_YEAR, IS_FORECASTED, PROD_DISCONTINUE,
+ PROD_DISCONTINUE_DATE, MOD_DT)
+AS
+SELECT forecasting_unit_id,
+    forecasting_unit_desc   ,
+    hybrid_variety_id       ,
+    hybrid_variety_desc     ,
+    crop_id                 ,
+    crop_desc               ,
+    uom                     ,
+    brand_family            ,
+    brand                   ,
+    germplasm               ,
+    growth_season           ,
+    mfg_name                ,
+    package_size            ,
+    seed_size               ,
+    trait                   ,
+    treatment               ,
+    experimental_name       ,
+    global_name             ,
+    relative_maturity       ,
+    culture                 ,
+    hybrid_lifecycle        ,
+    parental_flag           ,
+    forecast_year           ,
+    is_forecasted           ,
+    prod_discontinue        ,
+    prod_discontinue_date   ,
+    cre_dt AS mod_dt
+  FROM DEV_SUPPLY_CHAIN_VW.product_master;
+
+
+

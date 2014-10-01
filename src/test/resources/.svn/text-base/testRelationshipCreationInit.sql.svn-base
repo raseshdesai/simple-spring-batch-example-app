@@ -1,0 +1,36 @@
+
+-- Follow this 3-step process when adding custom/application specific tables/data
+
+-- Step1: Clean up your tables, if exists
+drop view DEV_SUPPLY_CHAIN_VW.RELATIONSHIP_CREATION_VW if exists;
+drop table DEV_SUPPLY_CHAIN_VW.RELATIONSHIP_CREATION if exists;
+
+--Step : Create Organization table
+CREATE TABLE DEV_SUPPLY_CHAIN_VW.RELATIONSHIP_CREATION
+(
+  FORECASTING_UNIT_ID     VARCHAR(250),
+  ORG_L4_ID               VARCHAR(250),
+  CUSTOMER_ID             VARCHAR(250),
+  RELATIONSHIP_CREATION   INT,
+  MOD_DT		            TIMESTAMP
+);
+
+--Step 2 :Create Organization Master View
+
+CREATE VIEW DEV_SUPPLY_CHAIN_VW.RELATIONSHIP_CREATION_VW
+(
+  FORECASTING_UNIT_ID,
+  ORG_L4_ID,
+  CUSTOMER_ID,
+  RELATIONSHIP_CREATION,
+  MOD_DT
+)
+AS
+   SELECT FORECASTING_UNIT_ID,
+    ORG_L4_ID,
+    CUSTOMER_ID,
+    RELATIONSHIP_CREATION,
+    MOD_DT
+
+   FROM DEV_SUPPLY_CHAIN_VW.RELATIONSHIP_CREATION;
+

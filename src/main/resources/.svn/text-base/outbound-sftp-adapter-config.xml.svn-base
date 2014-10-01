@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:int-sftp="http://www.springframework.org/schema/integration/sftp"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/integration/sftp
+        http://www.springframework.org/schema/integration/sftp/spring-integration-sftp.xsd
+	    http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:steelwedge_user.properties"/>
+
+    <bean id="sftpSessionFactory"
+          class="org.springframework.integration.sftp.session.DefaultSftpSessionFactory">
+        <property name="host" value="${host}"/>
+        <property name="port" value="${availableServerPort}"/>
+        <property name="user" value="${userid}"/>
+        <property name="password" value="${password}"/>
+    </bean>
+
+    <int:channel id="transferSftpChannel"/>
+
+    <int-sftp:outbound-channel-adapter id="sftpOutboundAdapter"
+                                       session-factory="sftpSessionFactory"
+                                       channel="transferSftpChannel"
+                                       remote-directory="${sftp_remote_directory}"/>
+    <int:channel id="toGET"/>
+
+    <int-sftp:outbound-gateway id="gatewayGET"
+                               local-directory="#{systemProperties['java.io.tmpdir'] + '/' + T(java.lang.System).currentTimeMillis()}"
+                               session-factory="sftpSessionFactory"
+                               request-channel="toGET"
+                               command="get"
+                               expression="payload"
+                               auto-create-local-directory="true"/>
+
+
+    <int:gateway id="dataTransferGateway"
+                 service-interface="com.monsanto.commercial.gsc.pdp.batch.send.integration.DataTransferGateway">
+        <int:method name="readFile" request-channel="toGET"/>
+        <int:method name="sendFile" request-channel="transferSftpChannel"/>
+    </int:gateway>
+
+
+</beans>

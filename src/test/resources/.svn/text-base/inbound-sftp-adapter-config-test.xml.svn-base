@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-sftp="http://www.springframework.org/schema/integration/sftp"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/integration/sftp http://www.springframework.org/schema/integration/sftp/spring-integration-sftp.xsd">
+
+    <int:channel id="receiveSftpChannel">
+        <int:queue/>
+    </int:channel>
+
+    <int-sftp:inbound-channel-adapter id="sftpInbondAdapter"
+                                      channel="receiveSftpChannel"
+                                      session-factory="sftpSessionFactory"
+                                      local-directory="#{ T(com.monsanto.commercial.gsc.pdp.batch.integration.PDPSftpOutBoundAdapter_IT).LOCAL_FTP_TEMP_DIR}"
+                                      remote-directory="/home/sgovi/sample/"
+                                      auto-create-local-directory="true"
+                                      delete-remote-files="false"
+                                      filename-pattern="testProductFile.txt">
+        <int:poller fixed-rate="1000" max-messages-per-poll="1"/>
+    </int-sftp:inbound-channel-adapter>
+</beans>

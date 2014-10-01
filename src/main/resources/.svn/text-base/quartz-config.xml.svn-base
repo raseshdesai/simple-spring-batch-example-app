@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="pdpJobScheduler" class="com.monsanto.commercial.gsc.pdp.batch.send.quartz.JobScheduler"/>
+
+    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="jobDetail"/>
+        <!-- 10 seconds -->
+        <property name="startDelay" value="10000"/>
+        <!-- Trigger every 15 Minutes -->
+        <property name="repeatInterval" value="900000"/>
+    </bean>
+
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="com.monsanto.commercial.gsc.pdp.batch.send.quartz.JobScheduler"/>
+        <property name="name" value="PDP_QUARTZ_EXECUTOR"/>
+        <property name="group" value="PDP_QUARTZ_GROUP"/>
+    </bean>
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+        <property name="schedulerName" value="MyClusteredScheduler"/>
+        <property name="waitForJobsToCompleteOnShutdown" value="true"/>
+        <property name="triggers">
+            <list>
+                <ref bean="simpleTrigger"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

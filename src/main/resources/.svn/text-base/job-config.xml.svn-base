@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright 2012 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       	   http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/batch
+           http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+
+    <!--BATCH CONFIGURATION-->
+
+    <batch:job id="dataTransferBatchJob">
+        <batch:step id="readLastSuccessfulStep" next="productFileGenerationStep">
+            <batch:tasklet ref="readLastSuccessfulJobTasklet"/>
+        </batch:step>
+
+        <batch:step id="productFileGenerationStep" next="organizationFileGenerationStep">
+            <batch:tasklet>
+                <batch:chunk reader="productDataHierarchyReader"
+                             writer="productDataHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+            <!--<batch:tasklet ref="dataHierarchyReaderTasklet"/>-->
+        </batch:step>
+
+        <batch:step id="organizationFileGenerationStep" next="standardUOMFileGenerationStep">
+            <batch:tasklet>
+                <batch:chunk reader="organizationDataHierarchyReader"
+                             writer="organizationDataHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+            <!--<batch:tasklet ref="dataHierarchyReaderTasklet"/>-->
+        </batch:step>
+
+        <batch:step id="standardUOMFileGenerationStep" next="customUOMFileGenerationStep">
+            <batch:tasklet>
+                <batch:chunk reader="standardUOMDataHierarchyReader"
+                             writer="standardUOMDataHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+        </batch:step>
+
+        <batch:step id="customUOMFileGenerationStep" next="netSalesFileGenerationStep">
+            <batch:tasklet>
+                <batch:chunk reader="customUOMDataHierarchyReader"
+                             writer="customUOMDataHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+        </batch:step>
+
+        <batch:step id="netSalesFileGenerationStep" next="geographyFileGenerationStep" >
+            <batch:tasklet>
+                <batch:chunk reader="netSalesDataHierarchyReader"
+                             writer="netSalesDataHierarchyWriter"
+                             commit-interval="500"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="geographyFileGenerationStep" next="projectedVisibilityStep">
+            <batch:tasklet>
+                <batch:chunk reader="geographyDataHierarchyReader"
+                             writer="geographyDataHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+        </batch:step>
+        <batch:step id="projectedVisibilityStep" next="relationshipCreationFileGenerationStep">
+            <batch:tasklet>
+                <batch:chunk reader="projectedDataHierarchyReader"
+                             writer="projectedDataHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+        </batch:step>
+
+        <batch:step id="relationshipCreationFileGenerationStep" next="supplyVisibilityFileGenerationStep">
+            <batch:tasklet>
+                <batch:chunk reader="relationshipCreationDataHierarchyReader"
+                             writer="relationshipCreationDataHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+        </batch:step>
+
+        <batch:step id="supplyVisibilityFileGenerationStep" next="openOrderFileGenerationStep">
+            <batch:tasklet>
+                <batch:chunk reader="supplyVisibilityDataHierarchyReader"
+                             writer="supplyVisibilityDataHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+        </batch:step>
+
+        <batch:step id="openOrderFileGenerationStep" next="corporateCalendarFileGenerationStep">
+            <batch:tasklet>
+                <batch:chunk reader="openOrderDataHierarchyReader"
+                             writer="openOrderDataHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+        </batch:step>
+
+        <batch:step id="corporateCalendarFileGenerationStep" next="productGeographyFileGenerationStep">
+            <batch:tasklet>
+                <batch:chunk reader="corporateCalendarHierarchyReader"
+                             writer="corporateCalendarHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+        </batch:step>
+
+        <batch:step id="productGeographyFileGenerationStep">
+            <batch:tasklet>
+                <batch:chunk reader="productGeographyHierarchyReader"
+                             writer="productGeographyHierarchyWriter"
+                             commit-interval="10"/>
+            </batch:tasklet>
+        </batch:step>
+
+    </batch:job>
+
+
+    <bean id="readLastSuccessfulJobTasklet"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.job.ReadLastSuccessfulJobTasklet">
+        <constructor-arg ref="batchJobExecutionDAO"/>
+    </bean>
+
+    <bean id="dataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.product.job.ProductDataHierarchyReader" parent="abstractReader"/>
+
+    <bean id="productDataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.product.job.ProductDataHierarchyReader" parent="abstractReader"/>
+
+    <bean id="organizationDataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.organization.job.OrganizationDataHierarchyReader" parent="abstractReader"/>
+
+
+    <bean id="standardUOMDataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.standardUOM.job.StandardUOMDataHierarchyReader" parent="abstractReader"/>
+
+    <bean id="customUOMDataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.customUOM.job.CustomUOMDataHierarchyReader" parent="abstractReader"/>
+
+    <bean id="netSalesDataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.netSales.job.NetSalesDataHierarchyReader" parent="abstractReader"/>
+
+    <bean id="geographyDataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.geography.job.GeographyDataHierarchyReader" parent="abstractReader" />
+
+    <bean id="projectedDataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.projectedVisibility.job.ProjectedVisibilityDataHierarchyReader" parent="abstractReader"/>
+
+    <bean id="relationshipCreationDataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.relationshipCreation.job.RelationshipCreationDataHierarchyReader" parent="abstractReader"/>
+
+    <bean id="supplyVisibilityDataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.supplyVisibility.job.SupplyVisibilityDataHierarchyReader" parent="abstractReader"/>
+
+    <bean id="openOrderDataHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.openOrder.job.OpenOrderDataHierarchyReader" parent="abstractReader"/>
+
+    <bean id="corporateCalendarHierarchyReader"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.corporateCalendar.job.CorporateCalendarHierarchyReader" parent="abstractReader"/>
+
+    <bean id="productGeographyHierarchyReader"
+              class="com.monsanto.commercial.gsc.pdp.batch.send.productGeography.job.ProductGeographyHierarchyReader" parent="abstractReader"/>
+
+    <bean id="abstractReader" class="com.monsanto.commercial.gsc.pdp.batch.send.AbstractDataHierarchyReader" abstract="true">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        <property name="pageSize" value="100"/>
+    </bean>
+
+    <bean id="dataHierarchyProcessor"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.job.ProductProcessor"/>
+
+    <bean id="productDataHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.product.job.ProductDataHierarchyWriter" parent="abstractWriter">
+
+    </bean>
+
+    <bean id="organizationDataHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.organization.job.OrganizationDataHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+    <bean id="relationshipCreationDataHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.relationshipCreation.job.RelationshipCreationDataHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+    <bean id="supplyVisibilityDataHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.supplyVisibility.job.SupplyVisibilityDataHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+    <bean id="standardUOMDataHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.standardUOM.job.StandardUOMDataHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+    <bean id="customUOMDataHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.customUOM.job.CustomUOMDataHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+    <bean id="netSalesDataHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.netSales.job.NetSalesDataHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+    <bean id="geographyDataHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.geography.job.GeographyDataHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+    <bean id="projectedDataHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.projectedVisibility.job.ProjectedVisibilityDataHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+    <bean id="openOrderDataHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.openOrder.job.OpenOrderDataHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+
+    <bean id="corporateCalendarHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.corporateCalendar.job.CorporateCalendarHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+    <bean id="productGeographyHierarchyWriter"
+          class="com.monsanto.commercial.gsc.pdp.batch.send.productGeography.job.ProductGeographyHierarchyWriter" parent="abstractWriter">
+    </bean>
+
+
+    <bean id="abstractWriter" class="com.monsanto.commercial.gsc.pdp.batch.send.AbstractFlatFileDataHierarchyWriter" abstract="true">
+        <property name="dataTransferFileLocation" value="${data_transfer_file_location}"/>
+        <property name="shouldDeleteIfEmpty" value="true"/>
+    </bean>
+
+</beans>

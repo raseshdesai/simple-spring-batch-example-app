@@ -1,0 +1,41 @@
+
+-- Follow this 3-step process when adding custom/application specific tables/data
+
+-- Step1: Clean up your tables, if exists
+drop view DEV_SUPPLY_CHAIN_VW.SUPPLY_VISIBILITY_VW if exists;
+drop table DEV_SUPPLY_CHAIN_VW.SUPPLY_VISIBILITY if exists;
+
+--Step : Create Organization table
+CREATE TABLE DEV_SUPPLY_CHAIN_VW.SUPPLY_VISIBILITY
+(
+  HYBRID_VARIETY_ID     VARCHAR(250),
+  ORG_L1_ID             VARCHAR(250),
+  COUNTRY_ID            VARCHAR(250),
+  AS_OF_DATE            VARCHAR(10),
+  SUPPLY_AVAILABILITY_UNITS FLOAT,
+  UNIT_OF_MEASURE       VARCHAR(250),
+  MOD_DT		            TIMESTAMP
+);
+
+--Step 2 :Create Organization Master View
+
+CREATE VIEW DEV_SUPPLY_CHAIN_VW.SUPPLY_VISIBILITY_VW
+(
+  HYBRID_VARIETY_ID,
+  ORG_L1_ID,
+  COUNTRY_ID,
+  AS_OF_DATE,
+  SUPPLY_AVAILABILITY_UNITS,
+  UNIT_OF_MEASURE,
+  MOD_DT
+)
+AS
+   SELECT    HYBRID_VARIETY_ID,
+    ORG_L1_ID,
+    COUNTRY_ID,
+    AS_OF_DATE,
+    SUPPLY_AVAILABILITY_UNITS,
+    UNIT_OF_MEASURE,
+    MOD_DT
+
+   FROM DEV_SUPPLY_CHAIN_VW.SUPPLY_VISIBILITY;

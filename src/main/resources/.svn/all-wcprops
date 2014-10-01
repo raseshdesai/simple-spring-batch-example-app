@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/commercial/!svn/ver/1025461/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources
+END
+quartz.properties
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/commercial/!svn/ver/1025385/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/quartz.properties
+END
+steelwedge_user.properties
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/commercial/!svn/ver/1024223/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/steelwedge_user.properties
+END
+jdbc-repository-common.xml
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/commercial/!svn/ver/1024943/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/jdbc-repository-common.xml
+END
+pdp_file_location.properties
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/commercial/!svn/ver/1024957/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/pdp_file_location.properties
+END
+steelWedgeMediationFlow.properties
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/commercial/!svn/ver/1024606/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/steelWedgeMediationFlow.properties
+END
+persistence-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/commercial/!svn/ver/1024986/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/persistence-config.xml
+END
+quartz-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/commercial/!svn/ver/1025461/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/quartz-config.xml
+END
+outbound-sftp-adapter-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/commercial/!svn/ver/1024887/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/outbound-sftp-adapter-config.xml
+END
+steelWedgeMediationFlow.xml
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/commercial/!svn/ver/1024606/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/steelWedgeMediationFlow.xml
+END
+inbound-file-adapter-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/commercial/!svn/ver/1023725/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/inbound-file-adapter-config.xml
+END
+job-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/commercial/!svn/ver/1024986/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/job-config.xml
+END
+outbound-file-adapter-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/commercial/!svn/ver/1023909/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/outbound-file-adapter-config.xml
+END
+jdbc-repository.xml
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/commercial/!svn/ver/1024956/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/jdbc-repository.xml
+END
+log4j.xml
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/commercial/!svn/ver/1024938/PDP-Family/PDP-App/trunk/pdp-war/src/main/resources/log4j.xml
+END

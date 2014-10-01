@@ -1,0 +1,33 @@
+drop view DEV_SUPPLY_CHAIN_VW.NET_SALES_VW if exists;
+drop table DEV_SUPPLY_CHAIN_VW.NET_SALES if exists;
+
+CREATE TABLE DEV_SUPPLY_CHAIN_VW.NET_SALES
+(
+            FORECASTING_UNIT_ID   VARCHAR(250),
+            ORG_L4_ID             VARCHAR(250),
+            CUSTOMER_ID           VARCHAR(250),
+            AS_OF_DATE            VARCHAR(10),
+            NET_SALES_UNITS       DECIMAL,
+            UNIT_OF_MEASURE       VARCHAR(250),
+            MOD_DT                TIMESTAMP             DEFAULT SYSDATE
+);
+
+CREATE VIEW DEV_SUPPLY_CHAIN_VW.NET_SALES_VW
+(
+            FORECASTING_UNIT_ID,
+            ORG_L4_ID,
+            CUSTOMER_ID,
+            AS_OF_DATE,
+            NET_SALES_UNITS,
+            UNIT_OF_MEASURE,
+            MOD_DT
+)
+AS
+   SELECT   FORECASTING_UNIT_ID,
+            ORG_L4_ID,
+            CUSTOMER_ID,
+            AS_OF_DATE,
+            NET_SALES_UNITS,
+            UNIT_OF_MEASURE,
+            MOD_DT
+     FROM   DEV_SUPPLY_CHAIN_VW.NET_SALES;

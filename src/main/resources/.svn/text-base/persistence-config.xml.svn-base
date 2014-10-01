@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    This file is named persistence-config-resource_local.xml instead of the standard persistence.xml to prevent
+    the application server from auto-detecting this persistence unit.
+-->
+<!--suppress JpaConfigDomFacetInspection -->
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <persistence-unit name="pdp-persistence-unit-manager" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>com.monsanto.commercial.gsc.pdp.batch.send.organization.model.Organization</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.product.model.Product</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.standardUOM.model.StandardUOM</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.model.BatchJobExecution</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.customUOM.model.CustomUOM</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.netSales.model.NetSales</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.geography.model.Geography</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.projectedVisibility.model.ProjectedVisibility</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.relationshipCreation.model.RelationshipCreation</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.supplyVisibility.model.SupplyVisibility</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.openOrder.model.OpenOrder</class>
+         <class>com.monsanto.commercial.gsc.pdp.batch.send.corporateCalendar.model.CorporateCalendar</class>
+        <class>com.monsanto.commercial.gsc.pdp.batch.send.productGeography.model.ProductGeography</class>
+        <properties>
+            <property name="hibernate.default_schema" value="DEV_SUPPLY_CHAIN_VW"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.show_sql" value="true"/>
+        </properties>
+   </persistence-unit>
+
+</persistence>
